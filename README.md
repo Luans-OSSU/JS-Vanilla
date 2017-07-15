@@ -1,3 +1,3 @@
 # JS-Vanilla
 
-Some projects written in javascript.
+Some projects written in javascript vanilla
