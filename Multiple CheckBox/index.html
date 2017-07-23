@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hold Shift to Check Multiple Checkboxes</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="inbox">
+    <div class="item">
+      <input type="checkbox">
+      <p>Registers a Service Worker.</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Responds with a 200 when offline.</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Contains some content when JavaScript is not available.</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Page load is fast enough on 3G.</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>User can be prompted to Install the Web App.</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Configured for a custom splash screen.</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Address bar matches brand colors.</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Reduce render-blocking stylesheets.</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Serve images as WebP.</p>
+    </div>
+  </div>
+
+<script>
+    const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+    let lastChecked;
+
+    function handleCheck(e) {
+
+        let inBetween = false;
+        if(e.shiftKey && this.checked) {
+            checkboxes.forEach(checkbox => {
+                if(checkbox === this || checkbox == lastChecked)
+                    inBetween = !inBetween;
+
+                if(inBetween)
+                    checkbox.checked = true;
+            })
+        }
+
+        lastChecked = this;
+    }
+
+    checkboxes.forEach(checkbox => checkbox.addEventListener("click", handleCheck));
+</script>
+</body>
+</html
