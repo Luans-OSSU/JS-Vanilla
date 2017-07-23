@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Search country</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+    <form class="search-form">
+        <input type="text" class="search" placeholder="Country or Capital">
+        <ul class="suggestions">
+            <li>Filter for a country</li>
+            <li>or a Capital</li>
+        </ul>
+    </form>
+    <script>
+        const endpoint = 'https://raw.githubusercontent.com/mledoze/countries/master/countries.json';
+        const countries = [];
+
+        fetch(endpoint)
+            .then(blob => blob.json())
+            .then(data => countries.push(...data));
+
+        function findMatches(wordToMatch, countries) {
+            return countries.filter(country => {
+
+                const regExp = new RegExp(wordToMatch, 'gi');
+                return country.name.common.match(regExp) || country.capital.match(regExp);
+            });
+        }
+
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function displayMatches() {
+            const matchArray = findMatches(this.value, countries);
+            const html = matchArray.map(country => {
+                const regex = new RegExp(this.value, 'gi');
+                const cityName = country.name.common.replace(regex, `<span class="hl">${this.value}</span>`);
+                const capital = country.capital.replace(regex, `<span class="hl">${this.value}</span>`);
+                return `
+                <li>
+                    <span class="name">${cityName}, ${capital}</span>
+                    <span class="population">${numberWithCommas(country.area)} m2</span>
+                </li>
+                `;
+            }).join('');
+            suggestions.innerHTML = html;
+
+        }
+
+        const searchInput = document.querySelector(".search");
+        const suggestions = document.querySelector(".suggestions");
+
+        searchInput.addEventListener("change", displayMatches);
+        searchInput.addEventListener("keyup", displayMatches);
+    </script>
+</body>
+
+</html>
